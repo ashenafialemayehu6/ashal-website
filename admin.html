@@ -1,79 +1,168 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ASHAL Admin Portal</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>ASHAL Review - Admin Publisher</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      background: #181818;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+    h2 { color: #ffb703; margin-top: 0; }
+    label { display: block; margin-top: 15px; font-weight: 600; font-size: 0.9em; }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      background: #252525;
+      border: 1px solid #3d3d3d;
+      border-radius: 6px;
+      color: #fff;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #ffb703;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    button:hover { background: #fb8500; }
+    #login-screen { text-align: center; }
+    #admin-panel { display: none; }
+    #status-msg { margin-top: 15px; font-weight: bold; text-align: center; }
+  </style>
 </head>
-<body class="bg-neutral-950 text-neutral-100 font-sans p-6 min-h-screen">
-  <div class="max-w-2xl mx-auto space-y-8">
-    
-    <div class="border-b border-neutral-800 pb-4">
-      <h1 class="text-2xl font-bold">ASHAL Review Publisher</h1>
-      <p class="text-neutral-400 text-sm">Publish new theories, relationship rules, and bad day logs to your live website.</p>
-    </div>
+<body>
 
-    <!-- Section 1: Credentials -->
-    <div class="space-y-4 bg-neutral-900 p-6 rounded-xl border border-neutral-800">
-      <h2 class="text-lg font-semibold text-amber-400">1. Database Connection</h2>
-      <input type="text" id="supaUrl" placeholder="Supabase Project URL (https://xyz.supabase.co)" class="w-full bg-neutral-950 border border-neutral-800 p-3 rounded-lg text-sm text-neutral-200 focus:outline-none focus:border-amber-500">
-      <input type="password" id="supaKey" placeholder="Supabase Anon Key (eyJ...)" class="w-full bg-neutral-950 border border-neutral-800 p-3 rounded-lg text-sm text-neutral-200 focus:outline-none focus:border-amber-500">
-    </div>
-
-    <!-- Section 2: Entry Details -->
-    <div class="space-y-4 bg-neutral-900 p-6 rounded-xl border border-neutral-800">
-      <h2 class="text-lg font-semibold text-amber-400">2. New Entry Details</h2>
-      <div class="grid grid-cols-2 gap-4">
-        <input type="text" id="ruleNumber" placeholder="Rule # (e.g. Rule #03)" class="bg-neutral-950 border border-neutral-800 p-3 rounded-lg text-sm text-neutral-200">
-        <input type="text" id="category" placeholder="Category (e.g. Friendship)" class="bg-neutral-950 border border-neutral-800 p-3 rounded-lg text-sm text-neutral-200">
-      </div>
-      <input type="text" id="title" placeholder="Title" class="w-full bg-neutral-950 border border-neutral-800 p-3 rounded-lg text-sm text-neutral-200">
-      <textarea id="content" placeholder="Content / Theory / Review..." rows="4" class="w-full bg-neutral-950 border border-neutral-800 p-3 rounded-lg text-sm text-neutral-200"></textarea>
-      <div class="grid grid-cols-2 gap-4">
-        <input type="text" id="rating" placeholder="Rating / Status (e.g. 10/10)" class="bg-neutral-950 border border-neutral-800 p-3 rounded-lg text-sm text-neutral-200">
-        <input type="text" id="status" placeholder="Tag (e.g. Core Theory)" class="bg-neutral-950 border border-neutral-800 p-3 rounded-lg text-sm text-neutral-200">
-      </div>
-      <button onclick="publishEntry()" class="w-full bg-amber-500 hover:bg-amber-600 text-neutral-950 font-bold p-3 rounded-lg transition-all">
-        Publish to Live Site
-      </button>
-      <p id="msg" class="text-xs text-emerald-400 font-semibold hidden">Successfully published to database!</p>
-    </div>
-
+<div class="container">
+  <!-- PASSCODE GATEKEEP SCREEN -->
+  <div id="login-screen">
+    <h2>🔒 Admin Authentication</h2>
+    <p style="color: #aaa; font-size: 0.9em;">Enter your admin passcode to unlock publisher controls.</p>
+    <input type="password" id="passcode-input" placeholder="Enter Passcode">
+    <button onclick="checkPasscode()">Unlock Portal</button>
+    <div id="login-error" style="color: #ff4d4d; margin-top: 10px; font-size: 0.85em;"></div>
   </div>
 
-  <script>
-    async function publishEntry() {
-      const url = document.getElementById('supaUrl').value.trim();
-      const key = document.getElementById('supaKey').value.trim();
-      const msg = document.getElementById('msg');
-      
-      if (!url || !key) {
-        alert('Please enter both your Supabase URL and Anon Key.');
-        return;
-      }
+  <!-- PUBLISHER FORM PANEL -->
+  <div id="admin-panel">
+    <h2>ASHAL Review Publisher</h2>
+    
+    <label>Supabase URL</label>
+    <input type="text" id="supabase-url" placeholder="https://xyz.supabase.co">
 
-      const client = supabase.createClient(url, key);
+    <label>Supabase Anon Key</label>
+    <input type="password" id="supabase-key" placeholder="eyJ...">
 
-      const { data, error } = await client.from('reviews').insert([
-        {
-          rule_number: document.getElementById('ruleNumber').value,
-          category: document.getElementById('category').value,
-          title: document.getElementById('title').value,
-          content: document.getElementById('content').value,
-          rating: document.getElementById('rating').value,
-          status: document.getElementById('status').value
-        }
-      ]);
+    <hr style="border-color: #333; margin-top: 20px;">
 
-      if (error) {
-        alert('Error publishing: ' + error.message);
-      } else {
-        msg.classList.remove('hidden');
-        setTimeout(() => msg.classList.add('hidden'), 4000);
-      }
+    <label>Rule Number</label>
+    <input type="text" id="rule-no" placeholder="e.g. Rule #01">
+
+    <label>Category</label>
+    <input type="text" id="category" placeholder="e.g. Core Theory">
+
+    <label>Title</label>
+    <input type="text" id="title" placeholder="Entry Title">
+
+    <label>Content</label>
+    <textarea id="content" rows="4" placeholder="Write entry content here..."></textarea>
+
+    <label>Rating</label>
+    <input type="text" id="rating" placeholder="10/10">
+
+    <label>Status</label>
+    <select id="status">
+      <option value="Active">Active</option>
+      <option value="Draft">Draft</option>
+      <option value="Archived">Archived</option>
+    </select>
+
+    <button onclick="publishEntry()">Publish to Live Site</button>
+    <div id="status-msg"></div>
+  </div>
+</div>
+
+<script>
+  // CHANGE THIS TO YOUR CHOICE OF PASSCODE
+  const SECRET_PASSCODE = "@Alemayehu3701";
+
+  function checkPasscode() {
+    const input = document.getElementById('passcode-input').value;
+    const errorDiv = document.getElementById('login-error');
+
+    if (input === SECRET_PASSCODE) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+    } else {
+      errorDiv.innerText = "Incorrect passcode. Access denied.";
     }
-  </script>
+  }
+
+  async function publishEntry() {
+    const url = document.getElementById('supabase-url').value.trim();
+    const key = document.getElementById('supabase-key').value.trim();
+    const statusMsg = document.getElementById('status-msg');
+
+    if (!url || !key) {
+      statusMsg.style.color = '#ff4d4d';
+      statusMsg.innerText = "Please enter Supabase credentials.";
+      return;
+    }
+
+    const supabase = window.supabase.createClient(url, key);
+
+    const newEntry = {
+      rule_number: document.getElementById('rule-no').value,
+      category: document.getElementById('category').value,
+      title: document.getElementById('title').value,
+      content: document.getElementById('content').value,
+      rating: document.getElementById('rating').value,
+      status: document.getElementById('status').value
+    };
+
+    statusMsg.style.color = '#ffb703';
+    statusMsg.innerText = "Publishing...";
+
+    const { data, error } = await supabase.from('reviews').insert([newEntry]);
+
+    if (error) {
+      statusMsg.style.color = '#ff4d4d';
+      statusMsg.innerText = "Error: " + error.message;
+    } else {
+      statusMsg.style.color = '#4E9F3D';
+      statusMsg.innerText = "Successfully published to database!";
+    }
+  }
+</script>
+
 </body>
 </html>
+   
+       
+      
+       
