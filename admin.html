@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASHAL Admin Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-neutral-950 text-neutral-100 font-sans p-6 min-h-screen">
+  <div class="max-w-2xl mx-auto space-y-8">
+    
+    <div class="border-b border-neutral-800 pb-4">
+      <h1 class="text-2xl font-bold">ASHAL Review Publisher</h1>
+      <p class="text-neutral-400 text-sm">Publish new theories, relationship rules, and bad day logs to your live website.</p>
+    </div>
+
+    <!-- Credentials Input -->
+    <div class="space-y-4 bg-neutral-900 p-6 rounded-xl border border-neutral-800">
+      <h2 class="text-lg font-semibold text-amber-400">1. Database Connection</h2>
+      <input type="text" id="supaUrl" placeholder="Supabase Project URL (https://xyz.supabase.co)" class="w-full bg-neutral-950 border border-neutral-800 p-3 rounded-lg text-sm text-neutral-200 focus:outline-none focus:border-amber-500">
+      <input type="password" id="supaKey" placeholder="Supabase Anon Key (eyJ...)" class="w-full bg-neutral-950 border border-neutral-800 p-3 rounded-lg text-sm text-neutral-200 focus:outline-none focus:border-amber-500">
+    </div>
+
+    <!-- Entry Input Form -->
+    <div class="space-y-4 bg-neutral-900 p-6 rounded-xl border border-neutral-800">
+      <h2 class="text-lg font-semibold text-amber-400">2. New Entry Details</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <input type="text" id="ruleNumber" placeholder="Rule # (e.g. Rule #03)" class="bg-neutral-950 border border-neutral-800 p-3 rounded-lg text-sm text-neutral-200">
+        <input type="text" id="category" placeholder="Category (e.g. Friendship)" class="bg-neutral-950 border border-neutral-800 p-3 rounded-lg text-sm text-neutral-200">
+      </div>
+      <input type="text" id="title" placeholder="Title" class="w-full bg-neutral-950 border border-neutral-800 p-3 rounded-lg text-sm text-neutral-200">
+      <textarea id="content" placeholder="Content / Theory / Review..." rows="4" class="w-full bg-neutral-950 border border-neutral-800 p-3 rounded-lg text-sm text-neutral-200"></textarea>
+      <div class="grid grid-cols-2 gap-4">
+        <input type="text" id="rating" placeholder="Rating / Status (e.g. 10/10)" class="bg-neutral-950 border border-neutral-800 p-3 rounded-lg text-sm text-neutral-200">
+        <input type="text" id="status" placeholder="Tag (e.g. Core Theory)" class="bg-neutral-950 border border-neutral-800 p-3 rounded-lg text-sm text-neutral-200">
+      </div>
+      <button onclick="publishEntry()" class="w-full bg-amber-500 hover:bg-amber-600 text-neutral-950 font-bold p-3 rounded-lg transition-all">
+        Publish to Live Site
+      </button>
+      <p id="msg" class="text-xs text-emerald-400 font-semibold hidden">Successfully published to database!</p>
+    </div>
+
+  </div>
+
+  <script>
+    async function publishEntry() {
+      const url = document.getElementById('supaUrl').value.trim();
+      const key = document.getElementById('supaKey').value.trim();
+      const msg = document.getElementById('msg');
+      
+      if (!url || !key) {
+        alert('Please enter both your Supabase URL and Anon Key.');
+        return;
+      }
+
+      const client = supabase.createClient(url, key);
+
+      const { data, error } = await client.from('reviews').insert([
+        {
+          rule_number: document.getElementById('ruleNumber').value,
+          category: document.getElementById('category').value,
+          title: document.getElementById('title').value,
+          content: document.getElementById('content').value,
+          rating: document.getElementById('rating').value,
+          status: document.getElementById('status').value
+        }
+      ]);
+
+      if (error) {
+        alert('Error publishing: ' + error.message);
+      } else {
+        msg.classList.remove('hidden');
+        setTimeout(() => msg.classList.add('hidden'), 4000);
+      }
+    }
+  </script>
+</body>
+</html>
