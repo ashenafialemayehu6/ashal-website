@@ -1,439 +1,148 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Basic Page Info -->
+  
+  <!-- Basic Page Info & Social Sharing Cards -->
   <title>ASHAL Review | Ashenafi Alemayehu</title>
-  <meta name="description" content="Personal archive of core theories, study logs, research frameworks, and systematic reviews.">
-
-  <!-- Social Media & Messaging Preview Cards -->
+  <meta name="description" content="A personal digital notebook for medical study insights, systematic rules, and creative technical projects.">
   <meta property="og:title" content="ASHAL Review">
-  <meta property="og:description" content="Personal archive of core theories, study logs, research frameworks, and systematic reviews by Ashenafi Alemayehu.">
+  <meta property="og:description" content="Medical learning, systematic frameworks, and tech projects by Ashenafi Alemayehu.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ashenafialemayehu6.github.io/ashal-website/">
+
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      padding: 50px 20px 30px;
+      text-align: center;
+      border-bottom: 1px solid #222;
+      background: #111;
+    }
+    header h1 {
+      color: #ffb703;
+      font-size: 2.5em;
+      margin: 0 0 10px 0;
+    }
+    header p {
+      color: #aaa;
+      font-size: 1.1em;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+    .card-box {
+      background: #181818;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      padding: 25px;
+      margin-bottom: 30px;
+    }
+    h2.section-title {
+      color: #ffb703;
+      border-bottom: 2px solid #222;
+      padding-bottom: 8px;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      font-size: 1.5em;
+    }
+  </style>
 </head>
-  <body>
+<body>
 
-  <!-- 1. NAVIGATION BAR (If you have one) -->
+  <!-- 1. WELCOME BANNER (TOP) -->
+  <header>
+    <h1>Welcome to ASHAL Review</h1>
+    <p>
+      My personal corner on the web. A dynamic archive where I document core theories, active research, personal rules, and systematic reflections as I build them.
+    </p>
+  </header>
 
-  <!-- 2. WELCOME SECTION (FIRST) -->
-  <section style="display: block; padding: 60px 20px; text-align: center; background: #111; border-bottom: 1px solid #222;">
-    <div style="max-width: 800px; margin: 0 auto;">
-      <h1 style="color: #ffb703; font-size: 2.5em; margin-bottom: 15px;">Welcome to ASHAL Review</h1>
-      <p style="color: #ccc; font-size: 1.1em; line-height: 1.6;">
-        An archive dedicated to documenting core theories, personal rules, academic reflections, and systematic reviews. Explore structured insights and live updates published directly from our database.
-      </p>
-    </div>
-  </section>
+  <div class="container">
 
-  <!-- 3. ABOUT ME SECTION (SECOND) -->
-  <section style="display: block; padding: 50px 20px; max-width: 800px; margin: 0 auto;">
-    <h2 style="color: #ffb703; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px;">About Me</h2>
-    <div style="background: #181818; padding: 25px; border-radius: 8px; border: 1px solid #2a2a2a; color: #ddd; line-height: 1.7;">
-      <p>
-        Welcome! I'm <strong>Ashenafi Alemayehu</strong>, a 2nd-year medical student at Dire Dawa University with a strong passion for medicine, systems building, and physical-digital projects.
-      </p>
-      <p style="margin-top: 15px;">
-        This portal serves as a personal repository for my study logs, research frameworks, rule definitions, and active projects—combining medical learning with web development.
-      </p>
-    </div>
-  </section>
+    <!-- 2. ABOUT ME SECTION (MIDDLE) -->
+    <section>
+      <h2 class="section-title">About Me</h2>
+      <div class="card-box">
+        <p style="margin-top: 0;">
+          Hey there! I’m <strong>Ashenafi Alemayehu</strong>—a second-year medical student at Dire Dawa University with a deep curiosity for how complex systems work, whether that’s human physiology or software architecture.
+        </p>
+        <p style="margin-bottom: 0;">
+          Between lectures, hospital clinical rotations, and late-night study sessions, I build digital tools and write out structured frameworks to make sense of the world. <strong>ASHAL Review</strong> is where all those pieces come together: part learning log, part project showcase, and part personal database.
+        </p>
+      </div>
+    </section>
 
-  <!-- 4. ASHAL REVIEW DATABASE GRID (THIRD) -->
-  <section style="max-width: 1000px; margin: 0 auto; padding: 20px;">
-    <h2 style="color: #ffb703; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px;">ASHAL Review Grid</h2>
-    <div id="reviews-grid"></div>
-  </section>
+    <!-- 3. ASHAL REVIEW DATABASE GRID (BOTTOM) -->
+    <section>
+      <h2 class="section-title">Published Reviews & Rules</h2>
+      <div id="reviews-grid">
+        <p style="color: #666; font-style: italic;">Loading live entries from database...</p>
+      </div>
+    </section>
 
-  <!-- 5. SUPABASE JAVASCRIPT FETCH SCRIPT (VERY LAST) -->
+  </div>
+
+  <!-- 4. SUPABASE LIVE FETCH SCRIPT -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // Your fetch script here
-  </script>
+    // Paste your Supabase credentials here
+    const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+    const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 
-</body>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ashenafi Alemayehu | The ASHAL Review & Vision</title>
-  
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
-  
-  <script src="https://unpkg.com/lucide@latest"></script>
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            serif: ['Playfair Display', 'serif'],
-          },
-          colors: {
-            gold: {
-              400: '#fbbf24',
-              500: '#f59e0b',
-              600: '#d97706',
-            }
-          }
-        }
+    async function loadReviews() {
+      const { data, error } = await supabaseClient
+        .from('reviews')
+        .select('*');
+
+      const container = document.getElementById('reviews-grid');
+      if (!container) return;
+
+      if (error) {
+        console.log('Supabase Fetch Error:', error);
+        container.innerHTML = '<p style="color: #ff4d4d;">Failed to load entries from database.</p>';
+        return;
       }
-    }
-  </script>
-</head>
-  <body>
 
-  <!-- WELCOME SECTION (Must be directly inside body) -->
-  <section style="display: block !important; padding: 60px 20px; text-align: center; background: #111; border-bottom: 1px solid #222;">
-    <div style="max-width: 800px; margin: 0 auto;">
-      <h1 style="color: #ffb703; font-size: 2.5em; margin-bottom: 15px;">Welcome to ASHAL Review</h1>
-      <p style="color: #ccc; font-size: 1.1em; line-height: 1.6;">
-        An archive dedicated to documenting core theories, personal rules, academic reflections, and systematic reviews. Explore structured insights and live updates published directly from our database.
-      </p>
-    </div>
-  </section>
+      if (data && data.length > 0) {
+        container.innerHTML = ''; // clear loading text
 
-  <!-- ABOUT ME SECTION -->
-  <section style="display: block !important; padding: 50px 20px; max-width: 800px; margin: 0 auto;">
-    <h2 style="color: #ffb703; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px;">About Me</h2>
-    <div style="background: #181818; padding: 25px; border-radius: 8px; border: 1px solid #2a2a2a; color: #ddd; line-height: 1.7;">
-      <p>
-        Welcome! I'm <strong>Ashenafi Alemayehu</strong>, a 2nd-year medical student at Dire Dawa University with a strong passion for medicine, systems building, and physical-digital projects.
-      </p>
-      <p style="margin-top: 15px;">
-        This portal serves as a personal repository for my study logs, research frameworks, rule definitions, and active projects—combining medical learning with web development.
-      </p>
-    </div>
-  </section>
-
-  <!-- REVIEWS GRID SECTION -->
-  <div id="reviews-grid"></div>
-
-</body>
-<body class="bg-neutral-950 text-neutral-100 font-sans antialiased selection:bg-gold-500 selection:text-neutral-950 overflow-x-hidden">
-
-  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-    <div class="absolute -top-40 -left-40 w-96 h-96 bg-amber-600/15 rounded-full blur-[120px]"></div>
-    <div class="absolute top-1/2 -right-40 w-96 h-96 bg-emerald-600/10 rounded-full blur-[140px]"></div>
-  </div>
-
-  <nav class="relative z-10 max-w-7xl mx-auto px-6 py-6 flex justify-between items-center border-b border-neutral-800/60">
-    <div class="flex items-center space-x-2">
-      <span class="text-2xl font-black font-serif tracking-widest bg-gradient-to-r from-gold-400 via-amber-200 to-amber-500 bg-clip-text text-transparent">
-        ASHAL<span class="text-xs tracking-normal font-sans text-neutral-400 border border-neutral-700 px-2 py-0.5 rounded-full ml-2">REVIEW</span>
-      </span>
-    </div>
-    
-    <div class="hidden md:flex space-x-8 text-sm font-medium text-neutral-400">
-      <a href="#ashal-review" class="hover:text-amber-400 transition-colors">ASHAL Review</a>
-      <a href="#vault" class="hover:text-amber-400 transition-colors">Locked Vault</a>
-      <a href="#alembizu" class="hover:text-emerald-400 transition-colors flex items-center gap-1">
-        <i data-lucide="cross" class="w-3.5 h-3.5 text-emerald-500"></i> Alembizu Memorial
-      </a>
-    </div>
-
-    <a href="#vault" class="flex items-center gap-2 border border-amber-500/30 hover:border-amber-500/80 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 text-xs font-semibold px-4 py-2 rounded-full transition-all duration-300">
-      <i data-lucide="lock" class="w-3.5 h-3.5"></i>
-      <span>Unlock Vault</span>
-    </a>
-  </nav>
-
-  <section class="relative z-10 max-w-7xl mx-auto px-6 pt-16 pb-24 flex flex-col items-center text-center">
-    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 text-xs font-medium mb-8">
-      <span class="flex h-2 w-2 relative">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-      </span>
-      Medical Scholar & Visionary • Dire Dawa
-    </div>
-
-    <h1 class="text-4xl md:text-7xl font-extrabold font-serif tracking-tight max-w-4xl leading-[1.15] mb-6">
-      Lessons, Philosophy, & The Vision of 
-      <span class="bg-gradient-to-r from-amber-200 via-gold-400 to-amber-600 bg-clip-text text-transparent">
-        Ashenafi
-      </span>
-    </h1>
-
-    <p class="text-neutral-400 text-lg md:text-xl max-w-2xl font-light leading-relaxed mb-10">
-      A digital time-capsule documenting life lessons, relationship rules, and personal growth—crafted today for the legacy of tomorrow and the foundation of <span class="text-neutral-200 font-normal">Alembizu Memorial Hospital</span>.
-    </p>
-
-    <div class="flex flex-col sm:flex-row gap-4 w-full justify-center max-w-md">
-      <a href="#ashal-review" class="flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-neutral-950 font-bold px-7 py-3.5 rounded-xl shadow-lg shadow-amber-500/10 transition-all duration-300 hover:scale-[1.02]">
-        <i data-lucide="book-open" class="w-4 h-4"></i>
-        <span>Explore ASHAL Review</span>
-      </a>
-
-      <a href="#vault" class="flex items-center justify-center gap-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-200 font-semibold px-7 py-3.5 rounded-xl transition-all duration-300 hover:scale-[1.02]">
-        <i data-lucide="key-round" class="w-4 h-4 text-amber-400"></i>
-        <span>Access The Vault</span>
-      </a>
-    </div>
-  </section>
-
-  <section id="ashal-review" class="relative z-10 max-w-7xl mx-auto px-6 py-20 border-t border-neutral-800/80">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
-      <div>
-        <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Life Analysis</span>
-        <h2 class="text-3xl md:text-4xl font-serif font-bold mt-2">The ASHAL Review & Thumb Rules</h2>
-      </div>
-      <p class="text-neutral-400 text-sm max-w-md mt-4 md:mt-0">
-        Personal theories on relationships, friendships, life lessons, and raw reviews of defining trials.
-      </p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      
-      <div class="p-6 rounded-2xl bg-neutral-900/60 border border-neutral-800 hover:border-amber-500/40 transition-all duration-300 flex flex-col justify-between">
-        <div>
-          <div class="flex justify-between items-center mb-4">
-            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/20">Rule #01</span>
-            <span class="text-xs text-neutral-500">Friendship</span>
-          </div>
-          <h3 class="text-xl font-bold font-serif mb-2 text-neutral-100">The Loyalty Matrix</h3>
-          <p class="text-neutral-400 text-sm leading-relaxed mb-6">
-            Friendship isn't built in quiet moments; it’s tested when everything gets loud. Real allies are those who stand firm without requiring explanations.
-          </p>
-        </div>
-        <div class="pt-4 border-t border-neutral-800/60 flex items-center justify-between text-xs text-neutral-500">
-          <span>Rating: 10 / 10</span>
-          <span class="text-amber-400 font-semibold">Core Theory</span>
-        </div>
-      </div>
-
-      <div class="p-6 rounded-2xl bg-neutral-900/60 border border-neutral-800 hover:border-amber-500/40 transition-all duration-300 flex flex-col justify-between">
-        <div>
-          <div class="flex justify-between items-center mb-4">
-            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/20">Rule #02</span>
-            <span class="text-xs text-neutral-500">Relationships</span>
-          </div>
-          <h3 class="text-xl font-bold font-serif mb-2 text-neutral-100">Intention & Honesty</h3>
-          <p class="text-neutral-400 text-sm leading-relaxed mb-6">
-            Love requires clarity. Half-hearted connection causes total confusion. Hold yourself and your partner to absolute truth, even when it's hard.
-          </p>
-        </div>
-        <div class="pt-4 border-t border-neutral-800/60 flex items-center justify-between text-xs text-neutral-500">
-          <span>Status: Applied</span>
-          <span class="text-amber-400 font-semibold">ASHAL Standard</span>
-        </div>
-      </div>
-
-      <div class="p-6 rounded-2xl bg-neutral-900/60 border border-neutral-800 hover:border-amber-500/40 transition-all duration-300 flex flex-col justify-between">
-        <div>
-          <div class="flex justify-between items-center mb-4">
-            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Trial Log</span>
-            <span class="text-xs text-neutral-500">Resilience</span>
-          </div>
-          <h3 class="text-xl font-bold font-serif mb-2 text-neutral-100">Bad Days as Fuel</h3>
-          <p class="text-neutral-400 text-sm leading-relaxed mb-6">
-            Low points aren't losses—they are clinical observations. Extract the lesson, discard the pain, and let the pressure build character.
-          </p>
-        </div>
-        <div class="pt-4 border-t border-neutral-800/60 flex items-center justify-between text-xs text-neutral-500">
-          <span>Outcome: Mastered</span>
-          <span class="text-emerald-400 font-semibold">Growth Mindset</span>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <section id="vault" class="relative z-10 max-w-4xl mx-auto px-6 py-20">
-    <div class="p-8 md:p-12 rounded-3xl bg-neutral-900/80 border border-neutral-800 shadow-2xl relative overflow-hidden backdrop-blur-xl">
-      
-      <div class="absolute -top-24 -right-24 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-      <div class="text-center max-w-md mx-auto mb-8">
-        <div class="inline-flex p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-400 mb-4">
-          <i data-lucide="lock" class="w-6 h-6"></i>
-        </div>
-        <h3 class="text-2xl font-bold font-serif">Family & Legacy Vault</h3>
-        <p class="text-neutral-400 text-sm mt-2">
-          Protected archive containing personal letters for my future wife, sons, memorial memories, and private story chapters.
-        </p>
-      </div>
-
-      <div id="vault-lock" class="max-w-xs mx-auto text-center space-y-4">
-        <div>
-          <input 
-            type="password" 
-            id="vault-pin" 
-            placeholder="Enter Key Code (Default: 2026)" 
-            class="w-full text-center tracking-widest text-lg bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-amber-300 focus:outline-none focus:border-amber-500 transition-colors"
-          />
-          <p id="vault-error" class="text-rose-500 text-xs mt-2 hidden">Incorrect Access Code. Try '2026'</p>
-        </div>
-        <button 
-          onclick="unlockVault()" 
-          class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-neutral-950 font-bold py-3 rounded-xl transition-all duration-300 shadow-md">
-          Unlock Archive
-        </button>
-      </div>
-
-      <div id="vault-content" class="hidden text-left space-y-6 pt-6 border-t border-neutral-800 animate-fadeIn">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-1">
-            <i data-lucide="unlock" class="w-3.5 h-3.5"></i> Vault Unlocked
-          </span>
-          <button onclick="lockVault()" class="text-xs text-neutral-500 hover:text-neutral-300">Lock Again</button>
-        </div>
-
-        <div class="p-4 rounded-xl bg-neutral-950/80 border border-neutral-800 space-y-2">
-          <h4 class="font-serif font-bold text-amber-300">Letter to My Future Family</h4>
-          <p class="text-xs text-neutral-400 leading-relaxed">
-            "If you are reading this version of the site, you are seeing the foundation laid when Ashenafi was still a medical student with a dream. Every decision made here was crafted with love and vision for you..."
-          </p>
-        </div>
-
-        <div class="p-4 rounded-xl bg-neutral-950/80 border border-neutral-800 space-y-2">
-          <h4 class="font-serif font-bold text-amber-300">Memorial Timeline & Girlfriend Archives</h4>
-          <p class="text-xs text-neutral-400 leading-relaxed">
-            Detailed timelines, shared moments, and curated memories saved directly for the family capsule.
-          </p>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <section id="alembizu" class="relative z-10 max-w-7xl mx-auto px-6 py-20 border-t border-neutral-800/80">
-    <div class="max-w-3xl mb-12">
-      <span class="text-xs font-semibold text-emerald-400 uppercase tracking-widest">Medical Vision</span>
-      <h2 class="text-3xl md:text-5xl font-serif font-bold mt-2">Alembizu Memorial Hospital</h2>
-      <p class="text-neutral-400 text-base mt-4 leading-relaxed">
-        Building a world-class healthcare institution honoring my father's legacy—providing advanced medical treatment, patient advice, and accessible healthcare orders across Ethiopia and neighboring nations.
-      </p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div class="p-8 rounded-2xl bg-neutral-900/40 border border-neutral-800 hover:border-emerald-500/30 transition-all duration-300">
-        <div class="p-3 rounded-xl bg-emerald-500/10 text-emerald-400 w-fit mb-4">
-          <i data-lucide="globe" class="w-6 h-6"></i>
-        </div>
-        <h3 class="text-xl font-bold font-serif text-neutral-100 mb-2">Regional Healthcare Orders</h3>
-        <p class="text-neutral-400 text-sm leading-relaxed">
-          Facilitating seamless treatment requests, medical consultations, and health advice dispatch tailored for communities across Ethiopia and bordering regions.
-        </p>
-      </div>
-
-      <div class="p-8 rounded-2xl bg-neutral-900/40 border border-neutral-800 hover:border-emerald-500/30 transition-all duration-300">
-        <div class="p-3 rounded-xl bg-emerald-500/10 text-emerald-400 w-fit mb-4">
-          <i data-lucide="stethosocpe" class="w-6 h-6"></i>
-        </div>
-        <h3 class="text-xl font-bold font-serif text-neutral-100 mb-2">Medical Advice & Case Studies</h3>
-        <p class="text-neutral-400 text-sm leading-relaxed">
-          Sharing medical insights, preventive guidelines, and clinical knowledge directly to educate patients and elevate community health literacy.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <footer class="relative z-10 border-t border-neutral-800/60 py-10 text-center text-xs text-neutral-500">
-    <p>© Ashenafi Alemayehu • Built with Purpose & Vision for Alembizu Memorial Hospital</p>
-  </footer>
-
-  <script>
-    lucide.createIcons();
-
-    function unlockVault() {
-      const pin = document.getElementById('vault-pin').value;
-      const errorMsg = document.getElementById('vault-error');
-      const lockBox = document.getElementById('vault-lock');
-      const contentBox = document.getElementById('vault-content');
-
-      if (pin === '2026') {
-        errorMsg.classList.add('hidden');
-        lockBox.classList.add('hidden');
-        contentBox.classList.remove('hidden');
+        data.forEach(item => {
+          const card = document.createElement('div');
+          card.style.cssText = "background: #181818; border: 1px solid #2a2a2a; padding: 20px; border-radius: 8px; margin-bottom: 15px;";
+          card.innerHTML = `
+            <div style="font-size: 0.85em; color: #ffb703; font-weight: bold; margin-bottom: 5px;">
+              ${item.rule_number || ''} ${item.rule_number && item.category ? '•' : ''} ${item.category || ''}
+            </div>
+            <h3 style="margin: 0 0 10px 0; color: #fff;">${item.title || 'Untitled Entry'}</h3>
+            <p style="color: #ccc; line-height: 1.6; margin: 0 0 12px 0;">${item.content || ''}</p>
+            <div style="font-size: 0.85em; color: #777;">
+              Rating: ${item.rating || 'N/A'} | Status: ${item.status || 'Active'}
+            </div>
+          `;
+          container.appendChild(card);
+        });
       } else {
-        errorMsg.classList.remove('hidden');
+        container.innerHTML = '<p style="color: #888;">No entries published yet. Add your first review from admin.html!</p>';
       }
     }
 
-    function lockVault() {
-      document.getElementById('vault-pin').value = '';
-      document.getElementById('vault-lock').classList.remove('hidden');
-      document.getElementById('vault-content').classList.add('hidden');
-    }
+    document.addEventListener('DOMContentLoaded', loadReviews);
   </script>
+
 </body>
 </html>
-<!-- Supabase JS Client -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-  // 1. Replace with your actual Supabase URL and Anon Key
-  const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-  const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
-
-  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-  // 2. Fetch reviews from PostgreSQL table
-  async function fetchReviews() {
-    const { data, error } = await supabaseClient
-      .from('reviews')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      console.error('Error fetching reviews:', error);
-      return;
-    }
-
-    const grid = document.getElementById('reviews-grid');
-    if (!grid) return;
-
-    // Clear static fallback placeholders
-    grid.innerHTML = '';
-
-    // Render dynamic cards from Supabase
-    data.forEach(item => {
-      const card = document.createElement('div');
-      card.className = 'review-card'; // Matches your CSS styling
-      card.innerHTML = `
-        <div class="card-header">
-          <span class="rule-badge">${item.rule_number || ''}</span>
-          <span class="category-badge">${item.category || ''}</span>
-        </div>
-        <h3>${item.title || ''}</h3>
-        <p>${item.content || ''}</p>
-        <div class="card-footer">
-          <span class="rating">Rating: ${item.rating || 'N/A'}</span>
-          <span class="status">${item.status || 'Active'}</span>
-        </div>
-      `;
-      grid.appendChild(card);
-    });
-  }
-
-  // Load reviews on page render
-  document.addEventListener('DOMContentLoaded', fetchReviews);
-</script><!-- WELCOME SECTION -->
-<section class="hero-section" style="padding: 60px 20px; text-align: center; background: #111; border-bottom: 1px solid #222;">
-  <div style="max-width: 800px; margin: 0 auto;">
-    <h1 style="color: #ffb703; font-size: 2.5em; margin-bottom: 15px;">Welcome to ASHAL Review</h1>
-    <p style="color: #ccc; font-size: 1.1em; line-height: 1.6;">
-      An archive dedicated to documenting core theories, personal rules, academic reflections, and systematic reviews. Explore structured insights and live updates published directly from our database.
-    </p>
-  </div>
-</section>
-
-<!-- ABOUT ME SECTION -->
-<section class="about-section" style="padding: 50px 20px; max-width: 800px; margin: 0 auto;">
-  <h2 style="color: #ffb703; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px;">About Me</h2>
-  <div style="background: #181818; padding: 25px; border-radius: 8px; border: 1px solid #2a2a2a; color: #ddd; line-height: 1.7;">
-    <p>
-      Welcome! I'm <strong>Ashenafi Alemayehu</strong>, a 2nd-year medical student at Dire Dawa University with a strong passion for medicine, systems building, and physical-digital projects.
-    </p>
-    <p style="margin-top: 15px;">
-      This portal serves as a personal repository for my study logs, research frameworks, rule definitions, and active projects—combining medical learning with web development.
-    </p>
-  </div>
-</section>
